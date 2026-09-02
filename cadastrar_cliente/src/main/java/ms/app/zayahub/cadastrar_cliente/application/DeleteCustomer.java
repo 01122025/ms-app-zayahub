@@ -12,7 +12,7 @@ public class DeleteCustomer {
 
     private final RegisterClientService registerClientService;
 
-    public ClientDTO deleteClient(ClientDTO clientDTO) {
+    public Long deleteClient(ClientDTO clientDTO) {
         return registerClientService.deleteClient(clientDTO);
     }
 }

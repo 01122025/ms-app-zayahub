@@ -37,11 +37,11 @@ public class RegisterCustomerUseCase implements RegisterClientService {
     }
 
     @Override
-    public ClientDTO deleteClient(ClientDTO clientDTO) {
+    public Long deleteClient(ClientDTO clientDTO) {
         log.info("Delete client from database ID: {}", clientDTO.idClient());
         var deleteClient = registerClientJpaRepository.getReferenceById(clientDTO.idClient());
         registerClientJpaRepository.delete(deleteClient);
         log.info("Delete client {}", deleteClient.getIdClient());
-        return clientMapper.entityToDTO(deleteClient);
+        return clientMapper.entityToDTO(deleteClient).idClient();
     }
 }

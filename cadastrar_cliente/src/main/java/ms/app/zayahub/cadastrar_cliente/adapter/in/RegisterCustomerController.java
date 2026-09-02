@@ -43,8 +43,8 @@ public class RegisterCustomerController {
     public ResponseEntity<Long> deleteClient(@RequestBody @Valid ClientDTO clientDTO) {
         log.info("deleting client in the database...");
         var delete = deleteCustomer.deleteClient(clientDTO);
-        log.info("client deleted successfully Client ID: {}, Client Name: {}, ",delete.idClient(),delete.name());
-        return ResponseEntity.ok(delete.idClient());
+        log.info("client deleted successfully Client ID: {}, Client Name: {}, ",clientDTO.idClient(),clientDTO.name());
+        return ResponseEntity.ok(delete);
     }
 
 }
