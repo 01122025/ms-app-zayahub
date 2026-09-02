@@ -1,12 +1,13 @@
-package br.com.api.cadastro_barbeiro.adapter.in;
+package ms.app.zayahub.cadastrar_profissional.adapter.in;
 
-import br.com.api.cadastro_barbeiro.application.DeleteProfessional;
-import br.com.api.cadastro_barbeiro.application.RegisterProfessional;
-import br.com.api.cadastro_barbeiro.application.UpdateProfessional;
-import br.com.api.cadastro_barbeiro.shared.dto.ProfessionalDTO;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ms.app.zayahub.cadastrar_profissional.application.DeleteProfessional;
+import ms.app.zayahub.cadastrar_profissional.application.RegisterProfessional;
+import ms.app.zayahub.cadastrar_profissional.application.UpdateProfessional;
+import ms.app.zayahub.cadastrar_profissional.shared.dto.ProfessionalDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,18 +32,12 @@ public class RegisterProfessionalController {
         return ResponseEntity.ok().body(request);
     }
 
-    @PutMapping("/updateClient")
-    public void updateClient(@RequestBody @Valid ProfessionalDTO professionalDTO) {
+    @PutMapping("/updateProfessional")
+    public ResponseEntity<ProfessionalDTO> updateClient(@RequestBody @Valid ProfessionalDTO professionalDTO) {
         log.info("updating professional in the database...");
         var update = updateProfessional.updateProfessional(professionalDTO);
-        log.info("professional updated successfully Professional Name: {}, Professional Number: {}",update.nome(),update.telefone());
+        log.info("professional updated successfully Professional Name: {}, Professional Number: {}",update.nome(),update.phone());
+        return ResponseEntity.ok().body(update);
     }
 
-    @DeleteMapping("/deleteClient")
-    public ResponseEntity<Long> deleteClient(@RequestBody @Valid ProfessionalDTO professionalDTO) {
-        log.info("deleting client in the database...");
-        var delete = deleteProfessional.deleteProfessional(professionalDTO);
-        log.info("client deleted successfully Client ID: {}, Client Name: {}",delete.id(),delete.nome());
-        return ResponseEntity.ok(delete.id());
-    }
 }

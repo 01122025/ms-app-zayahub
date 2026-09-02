@@ -1,7 +1,8 @@
-package br.com.api.cadastro_barbeiro.adapter.out.mapper;
+package ms.app.zayahub.cadastrar_profissional.adapter.out.mapper;
 
-import br.com.api.cadastro_barbeiro.adapter.out.entity.RegisterProfessionalEntity;
-import br.com.api.cadastro_barbeiro.shared.dto.ProfessionalDTO;
+
+import ms.app.zayahub.cadastrar_profissional.adapter.out.entity.RegisterProfessionalEntity;
+import ms.app.zayahub.cadastrar_profissional.shared.dto.ProfessionalDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

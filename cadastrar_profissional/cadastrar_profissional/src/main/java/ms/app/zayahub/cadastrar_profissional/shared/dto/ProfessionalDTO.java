@@ -1,13 +1,19 @@
-package br.com.api.cadastro_barbeiro.shared.dto;
+package ms.app.zayahub.cadastrar_profissional.shared.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 
+import java.sql.Time;
+
 public record ProfessionalDTO(
-        @JsonProperty("id") Long id,
-        @JsonProperty("nome") @NotNull String nome,
+        @JsonProperty("id_professional") Long id_professional,
+        @JsonProperty("name") @NotNull String nome,
         @JsonProperty("email") @NotNull String email,
-        @JsonProperty("telefone") String telefone,
-        @JsonProperty("ownerOrCollaborator")@NotNull String ownerOrCollaborator) {
+        @JsonProperty("phone") String phone,
+        @JsonProperty("role") @NotNull String role,
+        @JsonProperty("inicio_expediente") @NotNull Time inicioExpediente,
+        @JsonProperty("fim_expediente") @NotNull Time fimExpediente,
+        @JsonProperty("atend_domicilio") String atendDomicilio,
+        @JsonProperty("specialization") @NotNull String specialization) {
 }

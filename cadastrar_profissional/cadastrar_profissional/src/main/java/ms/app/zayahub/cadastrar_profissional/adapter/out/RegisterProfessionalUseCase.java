@@ -1,11 +1,12 @@
-package br.com.api.cadastro_barbeiro.adapter.out;
+package ms.app.zayahub.cadastrar_profissional.adapter.out;
 
-import br.com.api.cadastro_barbeiro.adapter.out.mapper.RegisterProfessionalMapper;
-import br.com.api.cadastro_barbeiro.adapter.out.repository.RegisterProfessionalRepository;
-import br.com.api.cadastro_barbeiro.application.service.RegisterProfessionalService;
-import br.com.api.cadastro_barbeiro.shared.dto.ProfessionalDTO;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ms.app.zayahub.cadastrar_profissional.adapter.out.mapper.RegisterProfessionalMapper;
+import ms.app.zayahub.cadastrar_profissional.adapter.out.repository.RegisterProfessionalRepository;
+import ms.app.zayahub.cadastrar_profissional.application.service.RegisterProfessionalService;
+import ms.app.zayahub.cadastrar_profissional.shared.dto.ProfessionalDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,7 +24,7 @@ public class RegisterProfessionalUseCase implements RegisterProfessionalService 
             throw new IllegalArgumentException("Já existe um profissional com esse nome");
         }
         var persistence = mapperRegisterProfessional.toRegisterProfessionalEntity(professionalDTO);
-        persistence.setId(null); // garante que é sempre INSERT, nunca UPDATE
+        persistence.setId_professional(null); // garante que é sempre INSERT, nunca UPDATE
         var result = jparegisterProfessional.save(persistence);
         return mapperRegisterProfessional.toProfessionalDTO(result);
     }
@@ -38,12 +39,13 @@ public class RegisterProfessionalUseCase implements RegisterProfessionalService 
     }
 
     @Override
-    public ProfessionalDTO deleteProfessional(ProfessionalDTO professionalDTO) {
-        log.info("delete in the database - request received : {}", professionalDTO);
-        var deleteDataBase= jparegisterProfessional.getReferenceById(professionalDTO.id());
+    public Long deleteProfessional(Long id) {
+        log.info("delete in the database - request received : {}", id);
+        var deleteDataBase= jparegisterProfessional.getReferenceById(id);
+        jparegisterProfessional.delete(deleteDataBase);
         var result = mapperRegisterProfessional.toProfessionalDTO(deleteDataBase);
         log.info("delete in the database - response : {}", result);
-        jparegisterProfessional.delete(deleteDataBase);
-        return result;
+        return result.id_professional();
     }
+
 }

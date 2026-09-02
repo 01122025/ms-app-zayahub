@@ -1,4 +1,4 @@
-package br.com.api.cadastro_barbeiro.shared.dto;
+package ms.app.zayahub.cadastrar_profissional.shared.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,9 +1,10 @@
-package br.com.api.cadastro_barbeiro.application.service;
+package ms.app.zayahub.cadastrar_profissional.application.service;
 
-import br.com.api.cadastro_barbeiro.shared.dto.ProfessionalDTO;
+
+import ms.app.zayahub.cadastrar_profissional.shared.dto.ProfessionalDTO;
 
 public interface RegisterProfessionalService {
     ProfessionalDTO registerProfessional(ProfessionalDTO professionalDTO);
     ProfessionalDTO updateProfessional(ProfessionalDTO professionalDTO);
-    ProfessionalDTO deleteProfessional(ProfessionalDTO professionalDTO);
+    Long deleteProfessional(Long id);
 }

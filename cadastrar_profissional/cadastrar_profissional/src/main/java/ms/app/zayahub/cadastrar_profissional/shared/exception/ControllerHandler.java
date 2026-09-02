@@ -1,8 +1,9 @@
-package br.com.api.cadastro_barbeiro.shared.exception;
+package ms.app.zayahub.cadastrar_profissional.shared.exception;
 
-import br.com.api.cadastro_barbeiro.shared.dto.ErrorDTO;
+
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import ms.app.zayahub.cadastrar_profissional.shared.dto.ErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
