@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: salaohub
+  datasource:
+    url: jdbc:mysql://localhost/service_orchestrator
+    username: root
+    password: admin15
+  jpa:
+    hibernate:
+      ddl-auto: update
+api:
+  security:
+    token:
+      secret-password: ${JWT_TOKEN:1234343}
