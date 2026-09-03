@@ -14,6 +14,6 @@ public class RegisterProfessional {
 
     public ProfessionalDTO registerProfessional(ProfessionalDTO professionalDTO) {
         log.info("Registering a professional in the database - request received : {}", professionalDTO);
-        return registerProfessionalService.registerProfessional(professionalDTO);
+            return registerProfessionalService.registerProfessional(professionalDTO);
     }
 }

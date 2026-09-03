@@ -8,12 +8,13 @@ import java.sql.Time;
 
 public record ProfessionalDTO(
         @JsonProperty("id_professional") Long id_professional,
-        @JsonProperty("name") @NotNull String nome,
+        @JsonProperty("name") @NotNull String name,
         @JsonProperty("email") @NotNull String email,
         @JsonProperty("phone") String phone,
         @JsonProperty("role") @NotNull String role,
-        @JsonProperty("inicio_expediente") @NotNull Time inicioExpediente,
-        @JsonProperty("fim_expediente") @NotNull Time fimExpediente,
-        @JsonProperty("atend_domicilio") String atendDomicilio,
+        @JsonProperty("inicio_expediente") @NotNull Time startBusinessHours,
+        @JsonProperty("fim_expediente") @NotNull Time endWorkday,
+        @JsonProperty("atend_domicilio") String homeService,
+        @JsonProperty("active") Boolean active,
         @JsonProperty("specialization") @NotNull String specialization) {
 }

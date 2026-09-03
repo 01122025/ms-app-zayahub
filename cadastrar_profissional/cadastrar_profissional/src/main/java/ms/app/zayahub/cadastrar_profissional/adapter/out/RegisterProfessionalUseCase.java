@@ -9,6 +9,8 @@ import ms.app.zayahub.cadastrar_profissional.application.service.RegisterProfess
 import ms.app.zayahub.cadastrar_profissional.shared.dto.ProfessionalDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -17,35 +19,85 @@ public class RegisterProfessionalUseCase implements RegisterProfessionalService 
     private final RegisterProfessionalMapper mapperRegisterProfessional;
     private final RegisterProfessionalRepository jparegisterProfessional;
 
+    @Override
+    public List<ProfessionalDTO> listAllProfessional() {
+        try {
+            var serchUsers = jparegisterProfessional.findByActiveTrue();
+
+            if (serchUsers.isEmpty()) {
+                log.warn("No active professionals found in the database.");
+                return List.of();
+            }
+
+            log.info("Active professionals found in the database.");
+            return mapperRegisterProfessional.toProfessionalDTOList(serchUsers);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
     @Override
     public ProfessionalDTO registerProfessional(ProfessionalDTO professionalDTO) {
-        if (jparegisterProfessional.existsByNome(professionalDTO.nome())) {
-            throw new IllegalArgumentException("Já existe um profissional com esse nome");
+       log.info("inicializando o registro do profissional no banco de dados - request received : {}", professionalDTO);
+        try {
+            if (!jparegisterProfessional.existsById(professionalDTO.id_professional())) {
+                log.warn("Professional with ID {} already exists. Cannot register.", professionalDTO.id_professional());
+                throw new IllegalArgumentException("Professional with ID " + professionalDTO.id_professional() + " already exists.");
+            }
+            var persistence = mapperRegisterProfessional.toRegisterProfessionalEntity(professionalDTO);
+            persistence.setId_professional(null); // garante que é sempre INSERT, nunca UPDATE
+            var result = jparegisterProfessional.save(persistence);
+            return mapperRegisterProfessional.toProfessionalDTO(result);
+        } catch (Exception ex) {
+            throw new RuntimeException("Error registering professional: " + ex.getMessage(), ex);
         }
-        var persistence = mapperRegisterProfessional.toRegisterProfessionalEntity(professionalDTO);
-        persistence.setId_professional(null); // garante que é sempre INSERT, nunca UPDATE
-        var result = jparegisterProfessional.save(persistence);
-        return mapperRegisterProfessional.toProfessionalDTO(result);
     }
 
     @Override
     public ProfessionalDTO updateProfessional(ProfessionalDTO professionalDTO) {
-        log.info("update in the database - request received : {}", professionalDTO);
-        var persistence = mapperRegisterProfessional.toRegisterProfessionalEntity(professionalDTO);
-       log.info("update in the database - response : {}", persistence);
-        var result= jparegisterProfessional.save(persistence);
-        return mapperRegisterProfessional.toProfessionalDTO(result) ;
+
+        try {
+            if (jparegisterProfessional.existsById(professionalDTO.id_professional())) {
+                log.info("Professional with ID {} exists. Proceeding with update.", professionalDTO.id_professional());
+            } else {
+                log.warn("Professional with ID {} does not exist. Cannot update.", professionalDTO.id_professional());
+                throw new IllegalArgumentException("Professional with ID " + professionalDTO.id_professional() + " does not exist.");
+            }
+            log.info("update in the database - request received : {}", professionalDTO);
+            var persistence = mapperRegisterProfessional.toRegisterProfessionalEntity(professionalDTO);
+            log.info("update in the database - response : {}", persistence);
+            var result = jparegisterProfessional.save(persistence);
+            return mapperRegisterProfessional.toProfessionalDTO(result);
+
+        } catch (Exception e) {
+            log.error("Error updating professional in the database: {}", e.getMessage());
+            throw e; // rethrow the exception after logging
+        }
     }
 
     @Override
-    public Long deleteProfessional(Long id) {
-        log.info("delete in the database - request received : {}", id);
-        var deleteDataBase= jparegisterProfessional.getReferenceById(id);
-        jparegisterProfessional.delete(deleteDataBase);
-        var result = mapperRegisterProfessional.toProfessionalDTO(deleteDataBase);
-        log.info("delete in the database - response : {}", result);
-        return result.id_professional();
+    public ProfessionalDTO deleteProfessional(ProfessionalDTO professionalDTO) {
+
+        try {
+            if (!jparegisterProfessional.existsById(professionalDTO.id_professional())) {
+                log.warn("Professional with ID {} does not exist. Cannot delete.", professionalDTO.id_professional());
+                throw new IllegalArgumentException("Professional with ID " + professionalDTO.id_professional() + " does not exist.");
+            }
+            log.info("delete in the database - request received : {}", professionalDTO);
+            var deleteDataBase = jparegisterProfessional.getReferenceById(professionalDTO.id_professional());
+            var result = mapperRegisterProfessional.toProfessionalDTO(deleteDataBase);
+            log.info("delete in the database - response : {}", result);
+            jparegisterProfessional.delete(deleteDataBase);
+            return result;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
+
 
 }

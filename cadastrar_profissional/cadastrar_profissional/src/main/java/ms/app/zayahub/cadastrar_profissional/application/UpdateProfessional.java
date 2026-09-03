@@ -12,7 +12,7 @@ public class UpdateProfessional {
     private final RegisterProfessionalService registerProfessionalService;
 
     public ProfessionalDTO updateProfessional(ProfessionalDTO professionalDTO) {
-        log.info("update to professional in the database - request received : {}", professionalDTO.nome());
+        log.info("update to professional in the database - request received : {}", professionalDTO.name());
         return registerProfessionalService.updateProfessional(professionalDTO);
     }
 

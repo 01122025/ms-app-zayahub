@@ -11,9 +11,9 @@ import ms.app.zayahub.cadastrar_profissional.shared.dto.ProfessionalDTO;
 public class DeleteProfessional {
     private final RegisterProfessionalService registerProfessionalService;
 
-    public Long deleteProfessional(Long id) {
-        log.info("Deleting professional's data from the database - request received: {}", id);
-        return registerProfessionalService.deleteProfessional(id);
+    public ProfessionalDTO deleteProfessional(ProfessionalDTO professionalDTO) {
+        log.info("Deleting professional's data from the database - request received: {}", professionalDTO.name());
+        return registerProfessionalService.deleteProfessional(professionalDTO);
     }
 
 }

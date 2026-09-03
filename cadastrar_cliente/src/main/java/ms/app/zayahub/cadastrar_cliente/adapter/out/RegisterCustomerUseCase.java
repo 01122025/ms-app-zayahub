@@ -29,11 +29,21 @@ public class RegisterCustomerUseCase implements RegisterClientService {
     @Override
     public ClientDTO updateClient(ClientDTO clientDTO) {
         log.info("Update client from database ID: {}", clientDTO.idClient());
-        var searchId = registerClientJpaRepository.getReferenceById(clientDTO.idClient());
-        log.info("Update client {}", searchId);
-        var mapperReturn = clientMapper.DTOtoEntity(clientDTO);
-        registerClientJpaRepository.save(mapperReturn);
-        return clientMapper.entityToDTO(mapperReturn);
+
+        try {
+            if (!registerClientJpaRepository.existsById(clientDTO.idClient())) {
+                log.error("Client with ID {} not found", clientDTO.idClient());
+                throw new RuntimeException("Client not found");
+            }
+            var searchId = registerClientJpaRepository.getReferenceById(clientDTO.idClient());
+            log.info("Update client {}", searchId);
+            var mapperReturn = clientMapper.DTOtoEntity(clientDTO);
+            registerClientJpaRepository.save(mapperReturn);
+            return clientMapper.entityToDTO(mapperReturn);
+        } catch (Exception e) {
+            log.error("Error updating client: {}", e.getMessage());
+            throw e;
+        }
     }
 
     @Override
