@@ -16,11 +16,15 @@ public class ValidatingRule implements ValidationRuleService {
 
     @Override
     public Boolean checkingRecord(ProfessionalDTO professionalDTO) {
-        Boolean result = null;
+        Boolean result = false;
         try {
-            if (validatingRuleRepository.existsByEmail(professionalDTO.email()) && validatingRuleRepository.existsByName(professionalDTO.name())) {
+            if (validatingRuleRepository.existsByEmail(professionalDTO.email()) || validatingRuleRepository.existsByName(professionalDTO.name())) {
                 log.info("ProfessionalDTO.email exists and ProfessionalDTO.name");
                 result = true;
+            }
+            if (professionalDTO.id_professional() != null && !validatingRuleRepository.existsById(professionalDTO.id_professional())) {
+                log.warn("Professional with ID {} already exists. Cannot register.", professionalDTO.id_professional());
+                throw new IllegalArgumentException("Professional with ID " + professionalDTO.id_professional() + " already exists.");
             }
         } catch (Exception e) {
             log.error("Error checking record: {}", e.getMessage());
@@ -30,11 +34,13 @@ public class ValidatingRule implements ValidationRuleService {
 
     @Override
     public Boolean checkingId(ProfessionalDTO professionalDTO) {
-        Boolean result = null;
+        Boolean result = false;
         try {
             if (validatingRuleRepository.existsById(professionalDTO.id_professional())) {
-                log.info("ProfessionalDTO.id_professional exists");
-                result = true;
+                log.info("Professional with ID {} exists. Proceeding with update.", professionalDTO.id_professional());
+            } else {
+                log.warn("Professional with ID {} does not exist. Cannot update.", professionalDTO.id_professional());
+                throw new IllegalArgumentException("Professional with ID " + professionalDTO.id_professional() + " does not exist.");
             }
         } catch (Exception e) {
             log.error("Error checking ID: {}", e.getMessage());
@@ -44,7 +50,7 @@ public class ValidatingRule implements ValidationRuleService {
 
     @Override
     public Boolean checkingActiveUsers() {
-        Boolean result = null;
+        Boolean result = false;
         try {
             if (validatingRuleRepository.existsActiveUsers()) {
                 log.info("There are active users in the database");

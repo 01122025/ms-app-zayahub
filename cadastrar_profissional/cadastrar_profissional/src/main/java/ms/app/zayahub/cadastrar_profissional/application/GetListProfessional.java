@@ -6,7 +6,6 @@ import ms.app.zayahub.cadastrar_profissional.application.service.RegisterProfess
 import ms.app.zayahub.cadastrar_profissional.application.service.ValidationRuleService;
 import ms.app.zayahub.cadastrar_profissional.shared.dto.ProfessionalDTO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -19,8 +18,7 @@ public class GetListProfessional {
     public List<ProfessionalDTO> listProfessionals() {
 
         try {
-            List<ProfessionalDTO> professionals = List.of();
-            if (validationRuleService.checkingActiveUsers() == true) {
+            if(validationRuleService.checkingActiveUsers() == true) {
                 log.info("Active users found.");
             }
             return registerProfessionalService.listAllProfessional();

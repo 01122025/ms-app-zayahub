@@ -42,10 +42,6 @@ public class RegisterProfessionalUseCase implements RegisterProfessionalService 
     public ProfessionalDTO registerProfessional(ProfessionalDTO professionalDTO) {
        log.info("inicializando o registro do profissional no banco de dados - request received : {}", professionalDTO);
         try {
-            if (!jparegisterProfessional.existsById(professionalDTO.id_professional())) {
-                log.warn("Professional with ID {} already exists. Cannot register.", professionalDTO.id_professional());
-                throw new IllegalArgumentException("Professional with ID " + professionalDTO.id_professional() + " already exists.");
-            }
             var persistence = mapperRegisterProfessional.toRegisterProfessionalEntity(professionalDTO);
             persistence.setId_professional(null); // garante que é sempre INSERT, nunca UPDATE
             var result = jparegisterProfessional.save(persistence);
@@ -59,12 +55,7 @@ public class RegisterProfessionalUseCase implements RegisterProfessionalService 
     public ProfessionalDTO updateProfessional(ProfessionalDTO professionalDTO) {
 
         try {
-            if (jparegisterProfessional.existsById(professionalDTO.id_professional())) {
-                log.info("Professional with ID {} exists. Proceeding with update.", professionalDTO.id_professional());
-            } else {
-                log.warn("Professional with ID {} does not exist. Cannot update.", professionalDTO.id_professional());
-                throw new IllegalArgumentException("Professional with ID " + professionalDTO.id_professional() + " does not exist.");
-            }
+
             log.info("update in the database - request received : {}", professionalDTO);
             var persistence = mapperRegisterProfessional.toRegisterProfessionalEntity(professionalDTO);
             log.info("update in the database - response : {}", persistence);

@@ -6,6 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface RegisterProfessionalRepository extends JpaRepository<RegisterProfessionalEntity, Long> {
-    boolean existsById(Long id);
     List<RegisterProfessionalEntity> findByActiveTrue();
 }

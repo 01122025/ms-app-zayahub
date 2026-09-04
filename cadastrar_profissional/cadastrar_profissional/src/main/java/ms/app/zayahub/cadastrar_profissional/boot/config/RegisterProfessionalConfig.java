@@ -19,17 +19,17 @@ public class RegisterProfessionalConfig {
     }
 
     @Bean
-    public RegisterProfessional registerProfessional(RegisterProfessionalService registerProfessional) {
-        return new RegisterProfessional(registerProfessional);
+    public RegisterProfessional registerProfessional(RegisterProfessionalService registerProfessionalService, ValidationRuleService validationRuleService) {
+        return new RegisterProfessional(registerProfessionalService, validationRuleService);
     }
     @Bean
-    public UpdateProfessional updateProfessional(RegisterProfessionalService registerProfessionalService) {
-        return new UpdateProfessional(registerProfessionalService);
+    public UpdateProfessional updateProfessional(RegisterProfessionalService registerProfessionalService, ValidationRuleService validationRuleService) {
+        return new UpdateProfessional(registerProfessionalService, validationRuleService);
     }
 
     @Bean
-    public DeleteProfessional deleteProfessional(RegisterProfessionalService registerProfessionalServiceDelete) {
-        return new DeleteProfessional(registerProfessionalServiceDelete);
+    public DeleteProfessional deleteProfessional(RegisterProfessionalService registerProfessionalService, ValidationRuleService validationRuleService) {
+        return new DeleteProfessional(registerProfessionalService, validationRuleService);
     }
 
 }
